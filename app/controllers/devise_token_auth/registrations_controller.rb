@@ -19,7 +19,6 @@ module DeviseTokenAuth
         }, status: 403
       end
 
-      begin
         # override email confirmation, must be sent manually from ctrl
         @resource.class.skip_callback("create", :after, :send_on_create_confirmation_instructions)
         if @resource.save
@@ -58,14 +57,7 @@ module DeviseTokenAuth
             errors: @resource.errors.to_hash.merge(full_messages: @resource.errors.full_messages)
           }, status: 403
         end
-      rescue
-        clean_up_passwords @resource
-        render json: {
-          status: 'error',
-          data:   @resource,
-          errors: ["An account already exists for #{@resource.email}"]
-        }, status: 403
-      end
+
     end
 
     def update
