@@ -23,14 +23,13 @@ module ActionDispatch::Routing
       # remove any unwanted devise modules
       opts[:skip].each{|item| controllers.delete(item)}
 
-      scope opts[:at] do
-        devise_for resource.pluralize.underscore.to_sym,
-          :class_name  => resource,
-          :module      => :devise,
-          :path        => "",
-          :controllers => controllers
+      devise_for resource.pluralize.underscore.to_sym,
+        :class_name  => resource,
+        :module      => :devise,
+        :path        => "#{opts[:at]}",
+        :controllers => controllers
 
-unnest_namespace do
+			unnest_namespace do
         # get full url path as if it were namespaced
         full_path = "#{@scope[:path]}/#{opts[:at]}"
 
